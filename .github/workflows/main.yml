@@ -7,16 +7,24 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: texlive/texlive:latest
+    container:
+      image: texlive/texlive:latest
+      env:
+        EMAIL: ${{ secrets.EMAIL }}
 
     steps:
     - name: Checkout repo
-      uses: actions/checkout@v3
+      uses: actions/checkout@v3.5.3
 
     - name: Compile
       run: make
 
-    - uses: actions/upload-artifact@v3
+    - name: Set git safe directory
+      run: git config --global --add safe.directory /__w/Awesome-CV/Awesome-CV
+
+    - name: Commit & Push changes
+      uses: EndBug/add-and-commit@v9
       with:
-        name: examples
-        path: examples/*.pdf
+        add: pdfs/*.pdf --force
+        message: Update pdfs
+        github_token: ${{ secrets.GITHUB_TOKEN }}
