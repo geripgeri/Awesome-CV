@@ -47,7 +47,7 @@ xelatex {your-cv}.tex
 Or using docker:
 
 ```bash
-docker run --rm --user $(id -u):$(id -g) -i -w "/doc" -v "$PWD":/doc texlive/texlive:latest make
+docker run --rm --user $(id -u):$(id -g) -i -w "/doc" -v "$PWD":/doc -e "PHONE_NUMBER=123456" -e "EMAIL=xyz@example.com" texlive/texlive:latest make
 ```
 
 In either case, this should result in the creation of ``{your-cv}.pdf``
